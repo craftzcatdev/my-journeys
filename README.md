@@ -7,9 +7,7 @@
 
 ## 👨‍💻 About
 
-I'm a developer with a background in React Native, embarking on a new journey  
-into native iOS development. This repo serves as a learning log — tracking  
-progress, projects, experiments, and notes along the way.
+I'm a developer with a background in React Native, embarking on a new journey into native iOS development. This repo serves as a learning log — tracking progress, projects, experiments, and notes along the way.
 
 ---
 
