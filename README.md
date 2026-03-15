@@ -11,18 +11,6 @@ I'm a developer with a background in React Native, embarking on a new journey in
 
 ---
 
-## 🗺️ Learning Roadmap
-
-| Phase | Topic | Status |
-|-------|-------|--------|
-| 1 | Swift fundamentals + SwiftUI basics | 🔄 In Progress |
-| 2 | SwiftData, data persistence | ⏳ Upcoming |
-| 3 | Architecture patterns (MV/MVVM) | ⏳ Upcoming |
-| 4 | WidgetKit + App Extensions | ⏳ Upcoming |
-| 5 | CloudKit + iCloud sync | ⏳ Upcoming |
-
----
-
 ## 📚 Resources
 
 **Courses**
@@ -45,14 +33,14 @@ I'm a developer with a background in React Native, embarking on a new journey in
 
 - **Stack:** SwiftUI · SwiftData · WidgetKit · CloudKit
 - **Pattern:** MV (Model-View) + MVVM for complex features
-- **Status:** 🔄 In Progress
+- **Status:** ⏳ Upcoming
 - [View Project →](./NoteForge)
 
 ---
 
 ## 📁 Structure
 
-```
+```markdown
 my-journeys/
 ├── NoteForge/        # Main project — Markdown note app
 ├── Exercises/        # 100 Days of SwiftUI daily exercises
@@ -60,16 +48,6 @@ my-journeys/
 ├── Experiments/      # Quick prototypes & concept testing
 └── More...
 ```
-
----
-
-## 📈 Progress Log
-
-### March 2026
-- ✅ Setup Xcode, created NoteForge project with SwiftData
-- ✅ Defined project structure (Feature-based architecture)
-- ✅ Defined tech stack & coding conventions
-- 🔄 Starting 100 Days of SwiftUI
 
 ---
 
