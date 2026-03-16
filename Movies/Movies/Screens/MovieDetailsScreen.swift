@@ -47,23 +47,20 @@ struct MovieDetailsScreen: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 
-                if let reviews = movie.reviews {
-                    if reviews.isEmpty {
-                        ContentUnavailableView {
-                            VStack {
-                                Image(systemName: "wind.snow.circle.fill")
-                                    .font(.system(size: 60).weight(.black))
-                                    .foregroundStyle(.gray)
-                                Spacer()
-                                Text("No Review")
-                                    .font(.title.weight(.semibold))
-                            }
+                if movie.reviews.isEmpty {
+                    ContentUnavailableView {
+                        VStack {
+                            Image(systemName: "wind.snow.circle.fill")
+                                .font(.system(size: 60).weight(.black))
+                                .foregroundStyle(.gray)
+                            Spacer()
+                            Text("No Review")
+                                .font(.title.weight(.semibold))
                         }
-                    } else {
-                        ReviewListView(reviews: reviews)
                     }
+                } else {
+                    ReviewListView(movies: movie)
                 }
-
             }
 
         }

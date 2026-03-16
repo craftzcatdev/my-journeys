@@ -10,15 +10,16 @@ import SwiftData
 
 struct ReviewListView: View {
     
-    let reviews: [Review]
     @Environment(\.modelContext) private var context
+    let movies: Movie
     
     private func deleteReview(indexSet: IndexSet) {
         indexSet.forEach { index in
-            let review = reviews[index]
+            let review = movies.reviews[index]
             context.delete(review)
             
             do {
+                movies.reviews.remove(at: index)
                 try context.save()
             } catch {
                 print(error.localizedDescription)
@@ -28,7 +29,7 @@ struct ReviewListView: View {
     
     var body: some View {
         List {
-            ForEach(reviews) { review in
+            ForEach(movies.reviews) { review in
                 VStack(alignment: .leading) {
                     Text(review.subject)
                         .font(.title2.weight(.medium))
@@ -42,7 +43,7 @@ struct ReviewListView: View {
     }
 }
 
-#Preview {
-    ReviewListView(reviews: [Review(subject: "Subject", body: "Body")])
-        .modelContainer(for: [Review.self, Movie.self], inMemory: true)
-}
+//#Preview {
+//    ReviewListView(reviews: [Review(subject: "Subject", body: "Body")])
+//        .modelContainer(for: [Review.self, Movie.self], inMemory: true)
+//}

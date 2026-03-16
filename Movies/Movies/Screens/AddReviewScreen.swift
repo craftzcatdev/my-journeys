@@ -45,7 +45,7 @@ struct AddReviewScreen: View {
                     
                     do {
                         try context.save()
-                        movie.reviews?.append(review)
+                        movie.reviews.append(review)
                         dismiss()
                     } catch {
                         print("Failed to save review: \(error.localizedDescription)")
