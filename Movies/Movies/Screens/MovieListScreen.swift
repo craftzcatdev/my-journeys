@@ -14,26 +14,24 @@ struct MovieListScreen: View {
     @State private var isAddMoviePresented: Bool = false
     
     var body: some View {
-        List(movies) { movie in
-            Text(movie.title)
-        }
-        .navigationTitle("Movies")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isAddMoviePresented.toggle()
-                } label: {
-                    Label("Add", systemImage: "plus")
-                        .labelStyle(.iconOnly)
-                }
+        MovieListView(movies: movies)
+            .navigationTitle("Movies")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isAddMoviePresented.toggle()
+                    } label: {
+                        Label("Add", systemImage: "plus")
+                            .labelStyle(.iconOnly)
+                    }
 
+                }
             }
-        }
-        .sheet(isPresented: $isAddMoviePresented) {
-            NavigationStack {
-                AddMovieScreen()
+            .sheet(isPresented: $isAddMoviePresented) {
+                NavigationStack {
+                    AddMovieScreen()
+                }
             }
-        }
     }
 }
 
