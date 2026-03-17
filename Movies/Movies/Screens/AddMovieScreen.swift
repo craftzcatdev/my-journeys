@@ -14,16 +14,25 @@ struct AddMovieScreen: View {
     
     @State private var title: String = ""
     @State private var year: Int?
+    @State private var selectedActor: Set<Actor> = []
     
     private var isFormvalid: Bool {
-        !title.isEmptyOrWhitespace && year != nil
+        !title.isEmptyOrWhitespace && year != nil && !selectedActor.isEmpty
     }
     
     var body: some View {
         Form {
             TextField("Title", text: $title)
             TextField("Year", value: $year ,format: .number)
+            
+            Section("Select actors") {
+                ActorSelectionView(selectedActors: $selectedActor)
+                
+            }
         }
+        .onChange(of: selectedActor, {
+            print(selectedActor.count)
+        })
         .navigationTitle("Add Movie")
         .navigationBarTitleDisplayMode(.automatic)
         .toolbar {
@@ -38,6 +47,13 @@ struct AddMovieScreen: View {
                     guard let year = year else { return }
                     
                     let movie = Movie(title: title, year: year)
+                    movie.actors = Array(selectedActor)
+                    
+                    selectedActor.forEach { actor in
+                        actor.movies.append(movie)
+                        context.insert(actor)
+                    }
+                    
                     context.insert(movie)
                     
                     do {
