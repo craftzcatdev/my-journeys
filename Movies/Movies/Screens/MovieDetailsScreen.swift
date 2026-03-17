@@ -62,6 +62,27 @@ struct MovieDetailsScreen: View {
                     ReviewListView(movies: movie)
                 }
             }
+            
+            Section(header: Text("Actor")) {
+                if movie.actors.isEmpty {
+                    ContentUnavailableView {
+                        VStack {
+                            Image(systemName: "wind.snow.circle.fill")
+                                .font(.system(size: 60).weight(.black))
+                                .foregroundStyle(.gray)
+                            Spacer()
+                            Text("No Actor")
+                                .font(.title.weight(.semibold))
+                        }
+                    }
+                } else {
+                    List(movie.actors) { actor in
+                        ActorCellView(actor: actor)
+                    }
+                }
+                
+                
+            }
 
         }
         .navigationTitle("Movie Details")
