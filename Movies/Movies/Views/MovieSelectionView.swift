@@ -10,7 +10,7 @@ import SwiftData
 
 struct MovieSelectionView: View {
     
-    @Query(sort: \Movie.name, order: .forward) private var movies: [Movie]
+    @Query(sort: \Movie.title, order: .forward) private var movies: [Movie]
     @Binding var selectedMovies: Set<Movie>
     
     var body: some View {
@@ -24,7 +24,7 @@ struct MovieSelectionView: View {
                             selectedMovies.remove(movie)
                         }
                     }
-                Text(movie.name)
+                Text(movie.title)
             }
         }
     }

@@ -23,7 +23,7 @@ struct MovieListScreen: View {
     @Environment(\.modelContext) private var context
     
     // FIX: `#Predicate` là một macro của `SwiftData`, yêu cầu Swift biết chính xác kiểu của đối tượng đang được filter.
-    @Query(filter: #Predicate<Movie> { $0.name.contains("Batman") } ) private var movies: [Movie]
+    @Query(filter: #Predicate<Movie> { $0.title.contains("Batman") } ) private var movies: [Movie]
     
     @Query(sort: \Actor.name, order: .forward) private var actors: [Actor]
     
@@ -125,9 +125,9 @@ struct MovieListScreen: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        MovieListScreen(movies: <#[Movie]#>)
-//            .modelContainer(for: [Movie.self, Review.self, Actor.self])
-//    }
-//}
+#Preview {
+    NavigationStack {
+        MovieListScreen()
+            .modelContainer(for: [Movie.self, Review.self, Actor.self], inMemory: true)
+    }
+}
