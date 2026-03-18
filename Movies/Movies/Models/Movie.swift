@@ -8,4 +8,4 @@
 import Foundation
 import SwiftData
 
-typealias Movie = MovieSchemaV1.Movie
+typealias Movie = MovieSchemaV3.Movie

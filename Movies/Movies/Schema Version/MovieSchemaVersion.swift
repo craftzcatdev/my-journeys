@@ -56,7 +56,7 @@ enum MovieSchemaV2: VersionedSchema {
     
     @Model
     final class Movie {
-        @Attribute(.unique) var title: String
+        @Attribute(.unique) var name: String
         var year: Int
         
         var reviewCount: Int {
@@ -76,8 +76,45 @@ enum MovieSchemaV2: VersionedSchema {
         var actors: [Actor] = []
         
         init(title: String, year: Int) {
-            self.title = title
+            self.name = title
             self.year = year
         }
     }
 }
+
+enum MovieSchemaV3: VersionedSchema {
+    //MARK: - Changing title of movie to name property
+    static var versionIdentifier: Schema.Version {
+        Schema.Version(3, 0, 0)
+    }
+    
+    static var models: [any PersistentModel.Type]  {
+        [Movie.self]
+    }
+    
+    @Model
+    final class Movie {
+        @Attribute(.unique, originalName: "title") var name: String
+        var year: Int
+        
+        var reviewCount: Int {
+            reviews.count
+        }
+        
+        var actorCount: Int {
+            actors.count
+        }
+        
+        @Relationship(deleteRule: .cascade, inverse: \Review.movie)
+        var reviews: [Review] = []
+        
+        @Relationship(deleteRule: .nullify, inverse: \Actor.movies)
+        var actors: [Actor] = []
+        
+        init(name: String, year: Int) {
+            self.name = name
+            self.year = year
+        }
+    }
+}
+
