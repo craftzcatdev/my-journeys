@@ -15,7 +15,7 @@ struct ActorCellView: View {
         VStack(alignment: .leading){
             Text(actor.name)
                 .font(.title.weight(.medium))
-            Text(actor.movies.map {$0.title}, format: .list(type: .and))
+            Text(actor.movies.map {$0.name}, format: .list(type: .and))
                 .font(.caption)
         }
     }
