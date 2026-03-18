@@ -21,30 +21,36 @@ enum MoviesMigrationPlan: SchemaMigrationPlan {
         fromVersion: MovieSchemaV1.self,
         toVersion: MovieSchemaV2.self,
         willMigrate: { context in
-            
-            guard let movies = try? context.fetch(FetchDescriptor<Movie>()) else {
+
+            guard let movies = try? context.fetch(FetchDescriptor<MovieSchemaV1.Movie>()) else {
                 return
             }
-        
-            var duplicates = Set<Movie>()
+
+            var duplicates = Set<MovieSchemaV1.Movie>()
             var uniqueSet = Set<String>()
-            
+
             for movie in movies {
-                if !uniqueSet.insert(movie.name).inserted {
+                if !uniqueSet
+                    .insert(movie.title).inserted {
                     duplicates.insert(movie)
                 }
             }
-            
+
             for movie in duplicates {
-                guard let movieToBeUpdated = movies.first(where: {$0.id == movie.id }) else {
+                guard let movieToBeUpdated = movies.first(where: { $0.id == movie.id }) else {
                     continue
                 }
-                movieToBeUpdated.name = movieToBeUpdated.name + " \(UUID().uuidString)"
+                movieToBeUpdated.title = movieToBeUpdated.title + " \(UUID().uuidString)"
             }
-            
+
             try? context.save()
         },
-        didMigrate: nil)
+        didMigrate: nil
+    )
+
     
-    static let migrateV2ToV3 = MigrationStage.lightweight(fromVersion: MovieSchemaV2.self, toVersion: MovieSchemaV3.self)
+    static let migrateV2ToV3 = MigrationStage.lightweight(
+        fromVersion: MovieSchemaV2.self,
+        toVersion: MovieSchemaV3.self
+    )
 }

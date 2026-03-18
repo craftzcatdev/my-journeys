@@ -56,7 +56,7 @@ enum MovieSchemaV2: VersionedSchema {
     
     @Model
     final class Movie {
-        @Attribute(.unique) var name: String
+        @Attribute(.unique) var title: String
         var year: Int
         
         var reviewCount: Int {
@@ -76,7 +76,7 @@ enum MovieSchemaV2: VersionedSchema {
         var actors: [Actor] = []
         
         init(title: String, year: Int) {
-            self.name = title
+            self.title = title
             self.year = year
         }
     }
