@@ -8,4 +8,31 @@
 import Foundation
 import SwiftData
 
-typealias Movie = MovieSchemaV3.Movie
+@Model
+final class Movie {
+    var title: String
+    var year: Int
+    var genre: Genre
+    
+    var reviewCount: Int {
+        reviews.count
+    }
+    
+    var actorCount: Int {
+        actors.count
+    }
+    
+    @Relationship(deleteRule: .cascade, inverse: \Review.movie)
+    var reviews: [Review] = []
+    
+    // FIX: Try to delete a Movie from an actor and add a new movie from the same actor
+    // - To avoid the crash you can update the Movie model to have the @Relationship with actors to be .nullify instead of .noAction
+    @Relationship(deleteRule: .nullify, inverse: \Actor.movies)
+    var actors: [Actor] = []
+    
+    init(title: String, year: Int, genre: Genre) {
+        self.title = title
+        self.year = year
+        self.genre = genre
+    }
+}
