@@ -22,6 +22,11 @@ struct MovieListView: View {
                 filter: #Predicate<Movie> { $0.title.contains(movieTitle)
                 },
                 animation: .bouncy)
+        case .reviewCount(let numberOfReview):
+            _movies = Query(filter: #Predicate<Movie> {$0.reviews.count >= numberOfReview}, animation: .bouncy)
+            
+        case .actorCount(let numberOfActor):
+            _movies = Query(filter: #Predicate<Movie> {$0.actors.count >= numberOfActor}, animation: .bouncy)
         case .none:
             _movies = Query()
         }
