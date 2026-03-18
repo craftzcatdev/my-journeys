@@ -26,7 +26,7 @@ struct MovieDetailsScreen: View {
             Button("Update") {
                 guard let year = year else { return }
                 
-                movie.name = title
+                movie.title = title
                 movie.year = year
                 
                 do {
@@ -88,7 +88,7 @@ struct MovieDetailsScreen: View {
         .navigationTitle("Movie Details")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            title = movie.name
+            title = movie.title
             year = movie.year
         }
         .sheet(isPresented: $isShowReviewScreen) {
@@ -111,7 +111,7 @@ struct MovieDetailContainerScreen: View {
             }
         }
         .onAppear {
-            movie = Movie(name: "Spider-Man: No Way Home", year: 2022)
+            movie = Movie(title: "Spider-Man: No Way Home", year: 2022, genre: .action)
             context.insert(movie!)
         }
     }
