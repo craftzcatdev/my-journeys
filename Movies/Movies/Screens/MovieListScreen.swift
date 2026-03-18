@@ -8,16 +8,29 @@
 import SwiftUI
 import SwiftData
 
+enum Sheets: Identifiable {
+    var id: Int {
+        hashValue
+    }
+    
+    case addMovie
+    case addActor
+    case showFilter
+}
+
 struct MovieListScreen: View {
     
     @Environment(\.modelContext) private var context
     
-    @Query(sort: \Movie.title, order: .forward) private var movies: [Movie]
+    // FIX: `#Predicate` là một macro của `SwiftData`, yêu cầu Swift biết chính xác kiểu của đối tượng đang được filter.
+    @Query(filter: #Predicate<Movie> { $0.title.contains("Batman") } ) private var movies: [Movie]
+    
     @Query(sort: \Actor.name, order: .forward) private var actors: [Actor]
     
-    @State private var isAddMoviePresented: Bool = false
-    @State private var isAddActorPresented: Bool = false
     @State private var actorName: String = ""
+    
+    @State private var activeSheet: Sheets?
+    @State private var filterOption: FilterOption = .none
     
     private func saveActor() {
         let actor = Actor(name: actorName)
@@ -26,20 +39,34 @@ struct MovieListScreen: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Movies")
-                .font(.largeTitle.weight(.semibold))
-            MovieListView(movies: movies)
+            HStack(alignment: .firstTextBaseline) {
+                Text("Movies")
+                    .font(.largeTitle.weight(.semibold))
+                Spacer()
+                
+                Button {
+                    activeSheet = .showFilter
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .font(.title.weight(.light))
+                        .tint(.primary)
+                }
+
+            }
+            .padding()
+            MovieListView(filterOption: filterOption)
             
             Text("Actors")
                 .font(.largeTitle.weight(.semibold))
+                .padding()
             ActorListView(actors: actors)
         }
-//        .navigationTitle("Movies")
+        //        .navigationTitle("Movies")
         .toolbar {
                 
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    isAddActorPresented.toggle()
+                    activeSheet = .addActor
                 } label: {
                     Label("Actor", systemImage: "person.badge.plus")
                         .labelStyle(.iconOnly)
@@ -50,7 +77,7 @@ struct MovieListScreen: View {
                 
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    isAddMoviePresented.toggle()
+                    activeSheet = .addMovie
                 } label: {
                     Label("Add", systemImage: "plus")
                         .labelStyle(.iconOnly)
@@ -58,39 +85,43 @@ struct MovieListScreen: View {
 
             }
         }
-        .sheet(isPresented: $isAddMoviePresented) {
-            NavigationStack {
-                AddMovieScreen()
-            }
-        }
-        .sheet(isPresented: $isAddActorPresented) {
-            VStack(alignment: .leading) {
-                Text("Add Actor")
-                    .font(.largeTitle.weight(.bold))
-                    
-                TextField("Actor Name", text: $actorName)
-                    .textFieldStyle(.plain)
-                    .padding(12)
-                    .background(.tertiary)
-                    .clipShape(.capsule)
-                    .font(.title.weight(.light))
-                    
-                Button {
-                    isAddActorPresented = false
-                    saveActor()
-                } label: {
-                    Text("Save")
-                        .font(.title.weight(.regular))
-                        .frame(minWidth: 0, maxWidth: .infinity)
+        .sheet(item: $activeSheet, content: { activeSheet in
+            switch activeSheet {
+            case .addMovie:
+                NavigationStack {
+                    AddMovieScreen()
                 }
-                .padding(.top, 12)
-                .buttonStyle(.glassProminent)
-                    
+            case .addActor:
+                VStack(alignment: .leading) {
+                    Text("Add Actor")
+                        .font(.largeTitle.weight(.bold))
+                        
+                    TextField("Actor Name", text: $actorName)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(.tertiary)
+                        .clipShape(.capsule)
+                        .font(.title.weight(.light))
+                        
+                    Button {
+                        saveActor()
+                        self.activeSheet = nil
+                    } label: {
+                        Text("Save")
+                            .font(.title.weight(.regular))
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                    }
+                    .padding(.top, 12)
+                    .buttonStyle(.glassProminent)
+                        
 
+                }
+                .padding(.horizontal, 20)
+                .presentationDetents([.fraction(0.30)])
+            case .showFilter:
+                FilterSelectionView(filterOption: $filterOption)
             }
-            .padding(.horizontal, 20)
-            .presentationDetents([.fraction(0.30)])
-        }
+        })
     }
 }
 
