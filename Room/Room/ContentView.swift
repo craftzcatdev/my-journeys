@@ -45,7 +45,9 @@ struct ContentView: View {
             ColorSelector(selection: $color)
             
             Button {
-                let room = Room(name: name, color: UIColor(color))
+                let uiColor = UIColor(color).resolvedColor(with: UITraitCollection.current)
+                let room = Room(name: name, color: uiColor)
+                
                 context.insert(room)
                 name = ""
             } label: {
