@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Genre: Int, Codable, CaseIterable, Identifiable {
+enum Genre: Int, CaseIterable, Identifiable, Codable {
     case action = 1
     case horror
     case kids

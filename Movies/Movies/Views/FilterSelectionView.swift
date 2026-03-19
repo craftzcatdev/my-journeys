@@ -6,30 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
 
 enum FilterOption {
     case title(String)
     case reviewCount(Int)
     case actorCount(Int)
+    case genre(Genre)
     case none
 }
 
 struct FilterSelectionView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @State private var movieTitle: String = ""
-    @State private var numberOfReview: Int?
-    @State private var numberOfActor: Int?
-    
-    @Binding var filterOption: FilterOption
+    @Binding var filterSelectionConfig: FilterSelectionConfig
     
     var body: some View {
-        Form {
-            Section("Filter by Title") {
-                TextField("Movie title", text: $movieTitle)
-                    .font(.title.weight(.medium))
+        Form{
+            Section {
+                TextField(
+                    "Movie title",
+                    text: $filterSelectionConfig.movieTitle
+                )
+                .font(.title.weight(.medium))
                 Button {
-                    filterOption = .title(movieTitle)
+                    filterSelectionConfig.filter = 
+                        .title(filterSelectionConfig.movieTitle)
                     dismiss()
                 } label: {
                     Text("Search")
@@ -38,14 +40,21 @@ struct FilterSelectionView: View {
                 .frame(maxWidth: .infinity ,alignment: .trailing)
                 .buttonStyle(.glassProminent)
 
+            } header: {
+                Text("Filter by Title")
             }
             
-            Section("Filter by number of review") {
-                TextField("Number of reviews: ", value: $numberOfReview, format: .number)
-                    .keyboardType(.numberPad)
+            Section {
+                TextField(
+                    "Number of reviews: ",
+                    value: $filterSelectionConfig.numberOfReview,
+                    format: .number
+                )
+                .keyboardType(.numberPad)
                 
                 Button {
-                    filterOption = .reviewCount(numberOfReview ?? 1)
+                    filterSelectionConfig.filter = 
+                        .reviewCount(filterSelectionConfig.numberOfReview ?? 1)
                     dismiss()
                 } label: {
                     Text("Search")
@@ -54,14 +63,21 @@ struct FilterSelectionView: View {
                 .frame(maxWidth: .infinity ,alignment: .trailing)
                 .buttonStyle(.glassProminent)
 
+            } header: {
+                Text("Filter by number of review")
             }
             
-            Section("Filter by number of actor") {
-                TextField("Number of actors: ", value: $numberOfActor, format: .number)
-                    .keyboardType(.numberPad)
+            Section {
+                TextField(
+                    "Number of actors: ",
+                    value: $filterSelectionConfig.numberOfActor,
+                    format: .number
+                )
+                .keyboardType(.numberPad)
                 
                 Button {
-                    filterOption = .actorCount(numberOfActor ?? 1)
+                    filterSelectionConfig.filter = 
+                        .actorCount(filterSelectionConfig.numberOfActor ?? 1)
                     dismiss()
                 } label: {
                     Text("Search")
@@ -70,11 +86,35 @@ struct FilterSelectionView: View {
                 .frame(maxWidth: .infinity ,alignment: .trailing)
                 .buttonStyle(.glassProminent)
 
+            } header: {
+                Text("Filter by number of actor")
+            }
+            
+            Section {
+                Picker(
+                    selection: $filterSelectionConfig.genre,
+                    label: Text("Select a Genre")
+                ) {
+                    ForEach(Genre.allCases) { genre in
+                        Text(genre.title).tag(genre)
+                    }
+                }
+                .onChange(of: filterSelectionConfig.genre) {
+                    filterSelectionConfig.filter = 
+                        .genre(filterSelectionConfig.genre)
+                    dismiss()
+                }
+            } header: {
+                Text("Filter by genre")
+                    .textCase(.uppercase)
             }
         }
     }
 }
 
 #Preview {
-    FilterSelectionView(filterOption: .constant(.title("Batman")))
+    FilterSelectionView(
+        filterSelectionConfig: .constant(FilterSelectionConfig())
+    )
 }
+

@@ -18,6 +18,14 @@ enum Sheets: Identifiable {
     case showFilter
 }
 
+struct FilterSelectionConfig {
+    var movieTitle: String = ""
+    var numberOfReview: Int?
+    var numberOfActor: Int?
+    var filter: FilterOption = .none
+    var genre: Genre = .action
+}
+
 struct MovieListScreen: View {
     
     @Environment(\.modelContext) private var context
@@ -28,6 +36,8 @@ struct MovieListScreen: View {
     @Query(sort: \Actor.name, order: .forward) private var actors: [Actor]
     
     @State private var actorName: String = ""
+    
+    @State private var filterSelectionConfig = FilterSelectionConfig()
     
     @State private var activeSheet: Sheets?
     @State private var filterOption: FilterOption = .none
@@ -53,8 +63,15 @@ struct MovieListScreen: View {
                 }
 
             }
+            
+            Button {
+                filterSelectionConfig = FilterSelectionConfig()
+            } label: {
+                Text("Clear filter")
+            }
+            
             .padding()
-            MovieListView(filterOption: filterOption)
+            MovieListView(filterOption: filterSelectionConfig.filter)
             
             Text("Actors")
                 .font(.largeTitle.weight(.semibold))
@@ -119,7 +136,7 @@ struct MovieListScreen: View {
                 .padding(.horizontal, 20)
                 .presentationDetents([.fraction(0.30)])
             case .showFilter:
-                FilterSelectionView(filterOption: $filterOption)
+                FilterSelectionView(filterSelectionConfig: $filterSelectionConfig)
             }
         })
     }
