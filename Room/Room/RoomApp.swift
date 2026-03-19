@@ -12,7 +12,9 @@ import SwiftData
 struct RoomsAppApp: App {
     
     init() {
-        ValueTransformer.setValueTransformer(UIColorValueTransformer(), forName: NSValueTransformerName("UIColorValueTransformer"))
+        // FIX: `EXC_BAD_ACCESS` tại `swift::nameForMetadata`
+        // Register TRƯỚC — đảm bảo transformer có sẵn khi ModelContainer khởi tạo
+        UIColorValueTransformer.register()
     }
     
     var body: some Scene {
