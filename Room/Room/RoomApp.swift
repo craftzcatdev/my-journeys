@@ -14,7 +14,10 @@ struct RoomsAppApp: App {
     init() {
         // FIX: `EXC_BAD_ACCESS` tại `swift::nameForMetadata`
         // Register TRƯỚC — đảm bảo transformer có sẵn khi ModelContainer khởi tạo
-        UIColorValueTransformer.register()
+        ValueTransformer.setValueTransformer(
+            UIColorValueTransformer(),
+            forName: .uiColorTransformer
+        )
     }
     
     var body: some Scene {
