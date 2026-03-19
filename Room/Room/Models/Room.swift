@@ -12,10 +12,12 @@ import UIKit
 @Model
 class Room {
     var name: String
-    @Attribute(.transformable(by: UIColorValueTransformer.self)) var color: UIColor
-    
+    @Attribute(.transformable(by: UIColorValueTransformer.transformerName.rawValue))
+    var color: UIColor
+
     init(name: String, color: UIColor) {
         self.name = name
         self.color = color
     }
 }
+
