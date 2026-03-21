@@ -8,22 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var showScanner: Bool = false
+    @State private var scannedCodes: [String] = []
+    @State private var lastScannedCode: String = ""
     
     var body: some View {
         NavigationStack {
-            List {
-                Button {
-                    showScanner.toggle()
-                } label: {
-                    Text("Show Scanner")
+            VStack(spacing: 16) {
+                List(scannedCodes, id: \.self) { code in
+                    Text(code)
+                        .font(.caption.monospaced())
                 }
+            }
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showScanner = true
+                    } label: {
+                        Image(systemName: "qrcode.viewfinder")
+                            .symbolEffect(.bounce)
+                    }
 
+                }
             }
             .navigationTitle("QR Scanner")
             .qrScanner(isScanning: $showScanner) { code in
-                print("The scanned code is: \(code)")
+                lastScannedCode = code
+                scannedCodes.insert(code, at: 0)
             }
         }
     }
