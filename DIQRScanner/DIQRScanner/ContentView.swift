@@ -23,7 +23,7 @@ struct ContentView: View {
             }
             .navigationTitle("QR Scanner")
             .qrScanner(isScanning: $showScanner) { code in
-                print(code)
+                print("The scanned code is: \(code)")
             }
         }
     }
