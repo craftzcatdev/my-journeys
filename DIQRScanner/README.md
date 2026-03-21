@@ -41,7 +41,7 @@ QR Code Scanner cho iOS sử dụng **SwiftUI** + **AVFoundation**, với hiệu
 
 Dự án này được mình học và triển khai lại dựa trên video:
 
-- YouTube: https://youtu.be/RMfpocBggJg?si=Tuuq5eohz3LxlGch
+- YouTube: [SwiftUI Dynamic Island QR Code Scanner | iOS 26 | Xcode 26](https://youtu.be/RMfpocBggJg?si=Tuuq5eohz3LxlGch) by **Kavsoft**
 
 Mục đích của phần ghi nguồn là để tôn trọng công sức tác giả nội dung gốc. Nếu bạn sử dụng lại mã nguồn trong repo này, vui lòng tiếp tục giữ tinh thần tôn trọng bản quyền đối với mọi nguồn tham khảo liên quan.
 
