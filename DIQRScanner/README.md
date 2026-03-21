@@ -7,33 +7,53 @@ QR Code Scanner cho iOS sử dụng **SwiftUI** + **AVFoundation**, với hiệu
 ## Mục lục
 
 - [DIQRScanner](#diqrscanner)
-	- [Mục lục](#mục-lục)
-	- [Kiến trúc tổng quan](#kiến-trúc-tổng-quan)
-	- [Chi tiết từng thành phần](#chi-tiết-từng-thành-phần)
-		- [1. CameraProperties](#1-cameraproperties)
-		- [2. View Extension — qrScanner](#2-view-extension--qrscanner)
-		- [3. QRScannerViewModified (ViewModifier)](#3-qrscannerviewmodified-viewmodifier)
-		- [4. DIQRScannerView](#4-diqrscannerview)
-		- [5. CameraLayerView (UIViewRepresentable)](#5-cameralayerview-uiviewrepresentable)
-	- [Luồng hoạt động](#luồng-hoạt-động)
-	- [Cách sử dụng cơ bản](#cách-sử-dụng-cơ-bản)
-	- [Hiển thị kết quả lên UI](#hiển-thị-kết-quả-lên-ui)
-	- [Lưu vào SwiftData](#lưu-vào-swiftdata)
-		- [Bước 1: Tạo Model](#bước-1-tạo-model)
-		- [Bước 2: Cấu hình ModelContainer trong App](#bước-2-cấu-hình-modelcontainer-trong-app)
-		- [Bước 3: Lưu và hiển thị trong ContentView](#bước-3-lưu-và-hiển-thị-trong-contentview)
-	- [Điểm cần chú ý khi apply cho dự án khác](#điểm-cần-chú-ý-khi-apply-cho-dự-án-khác)
-		- [1. Info.plist — Quyền Camera (bắt buộc)](#1-infoplist--quyền-camera-bắt-buộc)
-		- [2. iOS version tối thiểu](#2-ios-version-tối-thiểu)
-		- [3. ConcentricRectangle](#3-concentricrectangle)
-		- [4. Chỉ hỗ trợ thiết bị thật](#4-chỉ-hỗ-trợ-thiết-bị-thật)
-		- [5. Camera session phải start/stop trên background thread](#5-camera-session-phải-startstop-trên-background-thread)
-		- [6. Quét một lần rồi dừng](#6-quét-một-lần-rồi-dừng)
-		- [7. Chỉ hỗ trợ QR Code](#7-chỉ-hỗ-trợ-qr-code)
-		- [8. Dynamic Island](#8-dynamic-island)
-		- [9. File structure khi copy sang dự án khác](#9-file-structure-khi-copy-sang-dự-án-khác)
+  - [Mục lục](#mục-lục)
+  - [Nguồn tham khảo \& Tôn trọng bản quyền](#nguồn-tham-khảo--tôn-trọng-bản-quyền)
+  - [Quyền sử dụng, sao chép \& Miễn trừ trách nhiệm](#quyền-sử-dụng-sao-chép--miễn-trừ-trách-nhiệm)
+  - [Kiến trúc tổng quan](#kiến-trúc-tổng-quan)
+  - [Chi tiết từng thành phần](#chi-tiết-từng-thành-phần)
+    - [1. CameraProperties](#1-cameraproperties)
+    - [2. View Extension — qrScanner](#2-view-extension--qrscanner)
+    - [3. QRScannerViewModified (ViewModifier)](#3-qrscannerviewmodified-viewmodifier)
+    - [4. DIQRScannerView](#4-diqrscannerview)
+    - [5. CameraLayerView (UIViewRepresentable)](#5-cameralayerview-uiviewrepresentable)
+  - [Luồng hoạt động](#luồng-hoạt-động)
+  - [Cách sử dụng cơ bản](#cách-sử-dụng-cơ-bản)
+  - [Hiển thị kết quả lên UI](#hiển-thị-kết-quả-lên-ui)
+  - [Lưu vào SwiftData](#lưu-vào-swiftdata)
+    - [Bước 1: Tạo Model](#bước-1-tạo-model)
+    - [Bước 2: Cấu hình ModelContainer trong App](#bước-2-cấu-hình-modelcontainer-trong-app)
+    - [Bước 3: Lưu và hiển thị trong ContentView](#bước-3-lưu-và-hiển-thị-trong-contentview)
+  - [Điểm cần chú ý khi apply cho dự án khác](#điểm-cần-chú-ý-khi-apply-cho-dự-án-khác)
+    - [1. Info.plist — Quyền Camera (bắt buộc)](#1-infoplist--quyền-camera-bắt-buộc)
+    - [2. iOS version tối thiểu](#2-ios-version-tối-thiểu)
+    - [3. ConcentricRectangle](#3-concentricrectangle)
+    - [4. Chỉ hỗ trợ thiết bị thật](#4-chỉ-hỗ-trợ-thiết-bị-thật)
+    - [5. Camera session phải start/stop trên background thread](#5-camera-session-phải-startstop-trên-background-thread)
+    - [6. Quét một lần rồi dừng](#6-quét-một-lần-rồi-dừng)
+    - [7. Chỉ hỗ trợ QR Code](#7-chỉ-hỗ-trợ-qr-code)
+    - [8. Dynamic Island](#8-dynamic-island)
+    - [9. File structure khi copy sang dự án khác](#9-file-structure-khi-copy-sang-dự-án-khác)
 
 ---
+
+## Nguồn tham khảo & Tôn trọng bản quyền
+
+Dự án này được mình học và triển khai lại dựa trên video:
+
+- YouTube: https://youtu.be/RMfpocBggJg?si=Tuuq5eohz3LxlGch
+
+Mục đích của phần ghi nguồn là để tôn trọng công sức tác giả nội dung gốc. Nếu bạn sử dụng lại mã nguồn trong repo này, vui lòng tiếp tục giữ tinh thần tôn trọng bản quyền đối với mọi nguồn tham khảo liên quan.
+
+## Quyền sử dụng, sao chép & Miễn trừ trách nhiệm
+
+Bạn có thể sử dụng, sao chép, chỉnh sửa, tích hợp, và phân phối mã nguồn trong repo này cho **bất kỳ mục đích nào** (bao gồm cá nhân, học tập, và thương mại).
+
+Khi sử dụng mã nguồn này, bạn đồng ý rằng:
+
+- Mã nguồn được cung cấp trên cơ sở "as is" (nguyên trạng), không có bất kỳ cam kết hoặc bảo hành nào.
+- Tác giả repo không chịu trách nhiệm cho bất kỳ thiệt hại, mất mát dữ liệu, gián đoạn dịch vụ, hoặc vấn đề pháp lý phát sinh từ việc sử dụng mã nguồn.
+- Người dùng tự chịu trách nhiệm kiểm tra tính phù hợp, bảo mật, và tuân thủ pháp lý trước khi đưa vào môi trường thực tế.
 
 ## Kiến trúc tổng quan
 
