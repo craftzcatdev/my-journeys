@@ -1,16 +1,24 @@
-//
-//  ContentView.swift
-//  Room
-//
-//  Created by Hai Ng. on 19/3/26.
-//
+    //
+    //  ContentView.swift
+    //  Room
+    //
+    //  Created by Hai Ng. on 19/3/26.
+    //
 
 import SwiftUI
 import SwiftData
 
 struct ColorSelector: View {
     @Binding var selection: Color
-    let colors: [Color] = [.red, .yellow, .orange, .gray, .purple, .pink, .green]
+    let colors: [Color] = [
+        .red,
+        .yellow,
+        .orange,
+        .gray,
+        .purple,
+        .pink,
+        .green
+    ]
     
     var body: some View {
         HStack {
@@ -18,7 +26,8 @@ struct ColorSelector: View {
                 Circle()
                     .fill(color)
                     .overlay {
-                        selection == color ? Circle().stroke( Color.primary, lineWidth: 2) : nil
+                        selection == color ? Circle()
+                            .stroke( Color.primary, lineWidth: 2) : nil
                     }
                     .onTapGesture {
                         selection = color
@@ -45,7 +54,9 @@ struct ContentView: View {
             ColorSelector(selection: $color)
             
             Button {
-                let uiColor = UIColor(color).resolvedColor(with: UITraitCollection.current)
+                let uiColor = UIColor(color).resolvedColor(
+                    with: UITraitCollection.current
+                )
                 let room = Room(name: name, color: uiColor)
                 
                 context.insert(room)
@@ -53,7 +64,7 @@ struct ContentView: View {
             } label: {
                 Text("Save")
                     .font(.title3.weight(.medium))
-                .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
             }
             .padding(.vertical, 20)
             .buttonStyle(.glassProminent)
