@@ -33,9 +33,9 @@ import Playgrounds
     let url = URL(string: "https://ghibliapi.vercel.app/people/598f7048-74ff-41e0-92ef-87dc1ad980a9")!
     
     do {
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, _) = try await URLSession.shared.data(from: url)
         
-        try JSONDecoder().decode(Person.self, from: data)
+        _ = try JSONDecoder().decode(Person.self, from: data)
     } catch {
         print(error.localizedDescription)
     }
