@@ -8,12 +8,28 @@
 import SwiftUI
 
 struct FilmListView: View {
-    
+
     @State private var filmViewModels = FilmsViewModel()
-    
+
     var body: some View {
-        List(filmViewModels.films) {
-            Text($0.title)
+        NavigationStack {
+            switch filmViewModels.state {
+                case .idle:
+                    Text("No Films Yet.")
+
+                case .loading:
+                    ProgressView {
+                        Text("Loading...")
+                    }
+                case .loaded(let films):
+                    List(films) {
+                        Text($0.title)
+                    }
+                case .error(let string):
+                    Text("Error: \(string)")
+                        .foregroundStyle(.pink)
+            }
+
         }
         .task {
             await filmViewModels.fetch()
