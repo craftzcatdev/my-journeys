@@ -40,9 +40,9 @@ import Playgrounds
     let url: URL = URL(string: "https://ghibliapi.vercel.app/films")!
         
     do {
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, _) = try await URLSession.shared.data(from: url)
         
-        try JSONDecoder().decode([Film].self, from: data)
+        _ = try JSONDecoder().decode([Film].self, from: data)
     } catch {
         print(error.localizedDescription)
     }
