@@ -37,6 +37,12 @@ class FilmsViewModel {
     var state: State = .idle
     var films: [Film] = []
     
+    private let service: GhibliService
+    
+    init(service: GhibliService = DefGhibliService()) {
+        self.service = service
+    }
+    
     func fetch() async {
         
         guard state == .idle else { return }
@@ -44,32 +50,12 @@ class FilmsViewModel {
         state = .loading
         
         do {
-            let films = try await fetchFilms()
+            let films = try await service.fetchFilms()
             self.state = .loaded(films)
         } catch let error as APIError {
             self.state = .error(error.errorDescription ?? "Unknown Error")
         } catch {
             self.state = .error("unknown error")
-        }
-    }
-    
-    private func fetchFilms() async throws -> [Film] {
-        guard let url: URL = URL(string: "https://ghibliapi.vercel.app/films") else {
-            throw APIError.invalidUrl
-        }
-            
-        do {
-            let (data, reponse) = try await URLSession.shared.data(from: url)
-            
-            guard let httpResponse = reponse as? HTTPURLResponse,(200...299).contains(httpResponse.statusCode) else {
-                throw APIError.invalidResponse
-            }
-            
-           return try JSONDecoder().decode([Film].self, from: data)
-        } catch let error as DecodingError {
-            throw APIError.decoding(error)
-        } catch let error as URLError {
-            throw APIError.networkError(error)
         }
     }
 }
