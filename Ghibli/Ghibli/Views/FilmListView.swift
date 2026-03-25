@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FilmListView: View {
 
-    @State private var filmViewModels = FilmsViewModel()
+    var filmViewModels = FilmsViewModel()
 
     var body: some View {
         NavigationStack {
@@ -38,5 +38,7 @@ struct FilmListView: View {
 }
 
 #Preview {
-    FilmListView()
+    @State @Previewable var vm = FilmsViewModel(service: MockGhiBliService())
+    
+    FilmListView(filmViewModels: vm)
 }

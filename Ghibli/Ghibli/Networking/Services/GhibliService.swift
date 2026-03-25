@@ -8,7 +8,6 @@
 import Foundation
 
 protocol GhibliService {
-    func fetchFilms() async throws -> [Film] {
-        
-    }
+    func fetchFilms() async throws -> [Film]
+    func fetchPeople(from URLString: String) async throws -> Person
 }
