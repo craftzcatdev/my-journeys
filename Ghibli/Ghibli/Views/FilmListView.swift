@@ -38,6 +38,7 @@ struct FilmListView: View {
 }
 
 #Preview {
+    /// `@Previewable` là macro mới của `Swift` — cho phép dùng `@State` trực tiếp trong `#Preview` block mà không cần wrap vào một `View` phụ.
     @State @Previewable var vm = FilmsViewModel(service: MockGhiBliService())
     
     FilmListView(filmViewModels: vm)

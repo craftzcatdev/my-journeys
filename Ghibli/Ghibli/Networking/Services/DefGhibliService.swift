@@ -8,6 +8,7 @@
 import Foundation
 
 struct DefGhibliService: GhibliService {
+    /// `<T: Decodable>` nghĩa là "T có thể là bất kỳ type nào, miễn là Decodable". 
     func fetch<T: Decodable>(from URLString: String, type: T.Type) async throws -> T {
         guard let url: URL = URL(string: URLString) else {
             throw APIError.invalidUrl
