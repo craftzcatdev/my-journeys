@@ -22,8 +22,13 @@ struct FilmListView: View {
                         Text("Loading...")
                     }
                 case .loaded(let films):
-                    List(films) {
-                        Text($0.title)
+                    List(films) { film in
+                        NavigationLink(value: film) {
+                            FilmDetailScreen(film: film)
+                        }
+                    }
+                    .navigationDestination(for: Film.self) { film in
+                        Text(film.title)
                     }
                 case .error(let string):
                     Text("Error: \(string)")
