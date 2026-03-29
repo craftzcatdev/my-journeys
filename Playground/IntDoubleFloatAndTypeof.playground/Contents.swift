@@ -41,3 +41,22 @@ for devisor in 1..<10 {
     let reminder = x % devisor
     print("\(x)  = \(devisor) * \(quotient) + \(reminder)")
 }
+
+
+func divisionAlgorithm(x: Int, devisor: Int) -> String {
+    let result: String
+    let remainder = x % devisor
+    let quotient = x / devisor
+    
+    if remainder == 0 {
+        result = "\(x) = \(devisor) * \(quotient)"
+    } else {
+        result = "\(x) = \(devisor) * \(quotient) + \(remainder)"
+    }
+    
+    return result
+}
+
+for devisor in 1..<9 {
+    print(divisionAlgorithm(x: 112, devisor: devisor))
+}
