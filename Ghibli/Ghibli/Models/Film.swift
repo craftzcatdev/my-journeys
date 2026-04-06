@@ -26,7 +26,7 @@ struct Film: Codable, Identifiable, Equatable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id, title, image, description, director, producer, people
         
-        case bannerImage = "banner_image"
+        case bannerImage = "movie_banner"
         
         case releaseYear = "release_date"
         case duration = "running_time"
