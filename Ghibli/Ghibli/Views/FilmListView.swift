@@ -12,36 +12,31 @@ struct FilmListView: View {
     var filmViewModels = FilmsViewModel()
 
     var body: some View {
-        NavigationStack {
-            switch filmViewModels.state {
-                case .idle:
-                    Text("No Films Yet.")
+        
+        switch filmViewModels.state {
+            case .idle:
+                Text("No Films Yet.")
 
-                case .loading:
-                    ProgressView {
-                        Text("Loading...")
-                    }
-                case .loaded(let films):
-                    List(films) { film in
-                        NavigationLink(value: film) {
-                            HStack {
-                                FilmImageView(urlPath: film.image ?? "")
-                                    .frame(width: 100, height: 150)
-                                Text(film.title)
-                            }
+            case .loading:
+                ProgressView {
+                    Text("Loading...")
+                }
+            case .loaded(let films):
+                List(films) { film in
+                    NavigationLink(value: film) {
+                        HStack {
+                            FilmImageView(urlPath: film.image ?? "")
+                                .frame(width: 100, height: 150)
+                            Text(film.title)
                         }
                     }
-                    .navigationDestination(for: Film.self) { film in
-                        FilmDetailScreen(film: film)
-                    }
-                case .error(let string):
-                    Text("Error: \(string)")
-                        .foregroundStyle(.pink)
-            }
-
-        }
-        .task {
-            await filmViewModels.fetch()
+                }
+                .navigationDestination(for: Film.self) { film in
+                    FilmDetailScreen(film: film)
+                }
+            case .error(let string):
+                Text("Error: \(string)")
+                    .foregroundStyle(.pink)
         }
     }
 }

@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var filmsViewModel = FilmsViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            Tab("Movies", systemImage: "movieclapper") {
+                FilmsScreen(filmsViewModel: filmsViewModel)
+            }
+            
+            Tab("Favorites", systemImage: "heart") {
+               FavoritesScreen(filmsViewModel: filmsViewModel)
+            }
+            
+            Tab("Setting", systemImage: "gear"){
+                SettingScreen()
+            }
+            Tab(role: .search) {
+                SearchScreen()
+            }
         }
-        .padding()
     }
 }
 
