@@ -13,8 +13,25 @@ struct FilmsScreen: View {
 
     var body: some View {
         NavigationStack {
-            FilmListView(filmViewModels: filmsViewModel)
-                .navigationTitle("Ghibli Movies")
+            Group {
+                switch filmsViewModel.state {
+                    case .idle:
+                        Text("No Films Yet.")
+
+                    case .loading:
+                        ProgressView {
+                            Text("Loading...")
+                        }
+                    case .loaded(let films):
+                        FilmListView(films: films)
+                            
+                    case .error(let string):
+                        Text("Error: \(string)")
+                            .foregroundStyle(.pink)
+                }
+                    
+            }
+            .navigationTitle("Ghibli Movies")
         }
         .task {
             await filmsViewModel.fetch()

@@ -9,41 +9,29 @@ import SwiftUI
 
 struct FilmListView: View {
 
-    var filmViewModels = FilmsViewModel()
+    var films: [Film]
 
     var body: some View {
         
-        switch filmViewModels.state {
-            case .idle:
-                Text("No Films Yet.")
-
-            case .loading:
-                ProgressView {
-                    Text("Loading...")
+        List(films) { film in
+            NavigationLink(value: film) {
+                HStack {
+                    FilmImageView(urlPath: film.image ?? "")
+                        .frame(width: 100, height: 150)
+                    Text(film.title)
                 }
-            case .loaded(let films):
-                List(films) { film in
-                    NavigationLink(value: film) {
-                        HStack {
-                            FilmImageView(urlPath: film.image ?? "")
-                                .frame(width: 100, height: 150)
-                            Text(film.title)
-                        }
-                    }
-                }
-                .navigationDestination(for: Film.self) { film in
-                    FilmDetailScreen(film: film)
-                }
-            case .error(let string):
-                Text("Error: \(string)")
-                    .foregroundStyle(.pink)
+            }
+        }
+        .navigationDestination(for: Film.self) { film in
+            FilmDetailScreen(film: film)
+            
         }
     }
 }
 
-#Preview {
-    /// `@Previewable` là macro mới của `Swift` — cho phép dùng `@State` trực tiếp trong `#Preview` block mà không cần wrap vào một `View` phụ.
-    @State @Previewable var vm = FilmsViewModel(service: MockGhiBliService())
-    
-    FilmListView(filmViewModels: vm)
-}
+//#Preview {
+//    /// `@Previewable` là macro mới của `Swift` — cho phép dùng `@State` trực tiếp trong `#Preview` block mà không cần wrap vào một `View` phụ.
+//    @State @Previewable var vm = FilmsViewModel(service: MockGhiBliService())
+//    
+//    FilmListView(filmViewModels: vm)
+//}
