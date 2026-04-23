@@ -144,9 +144,9 @@ fileprivate struct DIQRScannerView: View {
                                 .foregroundStyle(.white.secondary)
                                 .lineLimit(1)
                                 .fixedSize()
-                                .offset(y: 25)
+                                .offset(y: 35)
                         }
-                        .padding(80)
+                        .padding(50)
                         .compositingGroup()
                         .blur(radius: isExpanding ? 0 : 20)
                         .opacity(isExpanding ? 1 : 0)
